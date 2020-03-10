@@ -215,11 +215,12 @@ GLFWbool _glfwInitJoysticksLinux(void)
 
         while ((entry = readdir(dir)))
         {
-            char path[20];
             regmatch_t match;
 
             if (regexec(&_glfw.linux_js.regex, entry->d_name, 1, &match, 0) != 0)
                 continue;
+
+            char path[PATH_MAX];
 
             snprintf(path, sizeof(path), "%s/%s", dirname, entry->d_name);
             if (openJoystickDevice(path))
