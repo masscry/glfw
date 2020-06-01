@@ -62,6 +62,13 @@ static _GLFWmonitor* createMonitor(DISPLAY_DEVICEW* adapter,
     DeleteDC(dc);
     free(name);
 
+    if (monitor == NULL)
+    {
+      _glfwInputError(GLFW_OUT_OF_MEMORY,
+                      "Failed to allocate data for monitor structure");
+      return NULL;
+    }
+
     if (adapter->StateFlags & DISPLAY_DEVICE_MODESPRUNED)
         monitor->win32.modesPruned = GLFW_TRUE;
 
@@ -198,6 +205,7 @@ _GLFWmonitor** _glfwPlatformGetMonitors(int* count)
         {
             for (displayIndex = 0;  ;  displayIndex++)
             {
+                
                 ZeroMemory(&display, sizeof(DISPLAY_DEVICEW));
                 display.cb = sizeof(DISPLAY_DEVICEW);
 

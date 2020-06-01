@@ -184,6 +184,12 @@ static GLFWbool supportsXInput(const GUID* guid)
         return GLFW_FALSE;
 
     ridl = calloc(count, sizeof(RAWINPUTDEVICELIST));
+    if (ridl == NULL)
+    {
+      _glfwInputError(GLFW_OUT_OF_MEMORY,
+                      "Failed allocate memory for input device list array");
+      return GLFW_FALSE;
+    }
 
     if (GetRawInputDeviceList(ridl, &count, sizeof(RAWINPUTDEVICELIST)) == (UINT) -1)
     {
@@ -408,6 +414,15 @@ static BOOL CALLBACK deviceCallback(const DIDEVICEINSTANCE* di, void* user)
     data.device = device;
     data.objects = calloc(dc.dwAxes + dc.dwButtons + dc.dwPOVs,
                           sizeof(_GLFWjoyobjectWin32));
+
+    if (data.objects == NULL)
+    {
+      _glfwInputError(GLFW_OUT_OF_MEMORY,
+                      "Failed to allocate joystick data structure");
+
+      IDirectInputDevice8_Release(device);
+      return DIENUM_CONTINUE;
+    }
 
     if (FAILED(IDirectInputDevice8_EnumObjects(device,
                                                deviceObjectCallback,

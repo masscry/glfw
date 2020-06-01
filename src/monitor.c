@@ -175,6 +175,11 @@ void _glfwInputMonitorWindowChange(_GLFWmonitor* monitor, _GLFWwindow* window)
 _GLFWmonitor* _glfwAllocMonitor(const char* name, int widthMM, int heightMM)
 {
     _GLFWmonitor* monitor = calloc(1, sizeof(_GLFWmonitor));
+    if (monitor == NULL)
+    {
+      return NULL;
+    }
+
     monitor->name = strdup(name);
     monitor->widthMM = widthMM;
     monitor->heightMM = heightMM;
