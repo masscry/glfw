@@ -115,9 +115,17 @@ if (MSVC)
 endif()
 
 if (GLFW_INSTALL)
+
+if(WIN32)
     install(
         TARGETS glfw
         EXPORT glfwTargets 
         RUNTIME DESTINATION bin
     )
+endif(WIN32)
+
+if(UNIX)
+    install(TARGETS glfw EXPORT glfwTargets DESTINATION lib${LIB_SUFFIX})
+endif(UNIX)
+
 endif(GLFW_INSTALL)
