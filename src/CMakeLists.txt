@@ -115,6 +115,9 @@ if (MSVC)
 endif()
 
 if (GLFW_INSTALL)
-    install(TARGETS glfw EXPORT glfwTargets DESTINATION lib${LIB_SUFFIX})
-endif()
-
+    install(
+        TARGETS glfw
+        EXPORT glfwTargets 
+        RUNTIME DESTINATION bin
+    )
+endif(GLFW_INSTALL)
